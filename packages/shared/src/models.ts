@@ -565,16 +565,16 @@ const GEMINI_MODELS: ModelConfigurationParams[] = [
 ];
 
 export const LANGCHAIN_USER_ONLY_MODELS = [
-  "o1",
-  "gpt-4o",
-  "gpt-4.5-preview",
-  "claude-3-5-sonnet-latest",
-  "claude-3-7-sonnet-latest",
-  "gemini-2.0-flash-thinking-exp-01-21",
-  "gemini-2.5-pro-preview-05-06",
-  "claude-sonnet-4-0",
-  "claude-opus-4-0",
-  "gpt-4.1",
+  // "o1",
+  // "gpt-4o",
+  // "gpt-4.5-preview",
+  // "claude-3-5-sonnet-latest",
+  // "claude-3-7-sonnet-latest",
+  // "gemini-2.0-flash-thinking-exp-01-21",
+  // "gemini-2.5-pro-preview-05-06",
+  // "claude-sonnet-4-0",
+  // "claude-opus-4-0",
+  // "gpt-4.1",
 ];
 
 // Models which do NOT support the temperature parameter.
