@@ -22,9 +22,6 @@ import {
   CONTEXT_DOCUMENTS_NAMESPACE,
   OC_WEB_SEARCH_RESULTS_MESSAGE_KEY,
 } from "@opencanvas/shared/constants";
-import {
-  TEMPERATURE_EXCLUDED_MODELS,
-} from "@opencanvas/shared/models";
 
 export const formatReflections = (
   reflections: Reflections,
@@ -201,15 +198,13 @@ export async function getModelFromConfig(
     modelConfig,
   } = getModelConfig(config);
   const { temperature = 0.5, maxTokens } = {
-    temperature: modelConfig?.temperatureRange.current,
+    temperature: modelConfig?.temperatureRange?.current,
     maxTokens: modelConfig?.maxTokens.current,
     ...extra,
   };
 
 
-  const includeStandardParams = !TEMPERATURE_EXCLUDED_MODELS.some(
-    (m) => m === modelName
-  );
+  const includeStandardParams = modelConfig?.temperatureRange !== null;
 
   return new ChatOpenAI({
     model: modelName,

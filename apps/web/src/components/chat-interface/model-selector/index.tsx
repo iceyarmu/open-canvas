@@ -18,7 +18,6 @@ import {
   useState,
 } from "react";
 import { ModelConfigPanel } from "./model-config-pannel";
-import { IsNewBadge } from "./new-badge";
 import { cn } from "@/lib/utils";
 import {
   CustomModelConfig,
@@ -80,7 +79,6 @@ function CommandModelItem({
       />
       <span className="flex flex-row w-full items-center justify-start gap-2">
         {model.label}
-        {model.isNew && <IsNewBadge />}
       </span>
 
       {openConfigModelId === model.name ? (
@@ -143,9 +141,6 @@ export default function ModelSelector({
 
   const selectedModelLabel =
     ALL_MODELS.find((m) => m.name === modelName)?.label || modelName;
-  const isSelectedModelNew = ALL_MODELS.some(
-    (m) => m.name === modelName && m.isNew
-  );
 
   const openaiModelGroup = allAllowedModels.filter(
     (m) => m.config.provider === "openai"
@@ -167,7 +162,6 @@ export default function ModelSelector({
           />
           <span className="flex flex-row items-center justify-start gap-2">
             {selectedModelLabel}
-            {isSelectedModelNew && <IsNewBadge />}
           </span>
           <CaretSortIcon className="size-4 opacity-50 ml-auto" />
         </div>

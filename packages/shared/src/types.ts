@@ -5,17 +5,16 @@ export interface ModelConfigurationParams {
   label: string;
   modelName?: string;
   config: CustomModelConfig;
-  isNew: boolean;
 }
 
 export interface CustomModelConfig {
   provider: string;
-  temperatureRange: {
+  temperatureRange?: {
     min: number;
     max: number;
     default: number;
     current: number;
-  };
+  } | null;
   maxTokens: {
     min: number;
     max: number;

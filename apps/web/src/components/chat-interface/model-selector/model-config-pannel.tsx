@@ -12,7 +12,6 @@ import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import {
   ALL_MODEL_NAMES,
-  TEMPERATURE_EXCLUDED_MODELS,
 } from "@opencanvas/shared/models";
 import { cn } from "@/lib/utils";
 import { GearIcon, ResetIcon } from "@radix-ui/react-icons";
@@ -42,6 +41,7 @@ export function ModelConfigPanel({
 }: ModelConfigPanelProps) {
   const handleTemperatureChange = useCallback(
     (value: number[]) => {
+      if (!modelConfig.temperatureRange) return;
       setModelConfig(model.name, {
         ...modelConfig,
         temperatureRange: {
@@ -69,10 +69,10 @@ export function ModelConfigPanel({
   const handleReset = useCallback(() => {
     setModelConfig(model.name, {
       ...modelConfig,
-      temperatureRange: {
+      temperatureRange: modelConfig.temperatureRange ? {
         ...modelConfig.temperatureRange,
         current: modelConfig.temperatureRange.default,
-      },
+      } : null,
       maxTokens: {
         ...modelConfig.maxTokens,
         current: modelConfig.maxTokens.default,
@@ -94,18 +94,20 @@ export function ModelConfigPanel({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="grid gap-4">
-          <ModelSettingSlider
-            title="Temperature"
-            description="Controls creativity - lower for focused outputs, higher for more variety and imagination."
-            value={modelConfig.temperatureRange.current}
-            range={{
-              min: modelConfig.temperatureRange.min,
-              max: modelConfig.temperatureRange.max,
-              step: 0.1,
-            }}
-            onChange={handleTemperatureChange}
-            disabled={TEMPERATURE_EXCLUDED_MODELS.some((m) => m === model.name)}
-          />
+          {modelConfig.temperatureRange && (
+            <ModelSettingSlider
+              title="Temperature"
+              description="Controls creativity - lower for focused outputs, higher for more variety and imagination."
+              value={modelConfig.temperatureRange.current}
+              range={{
+                min: modelConfig.temperatureRange.min,
+                max: modelConfig.temperatureRange.max,
+                step: 0.1,
+              }}
+              onChange={handleTemperatureChange}
+              disabled={false}
+            />
+          )}
           <ModelSettingSlider
             title="Max tokens"
             description="Set how long the AI's response can be - more tokens mean longer, more detailed responses."

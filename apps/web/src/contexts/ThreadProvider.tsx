@@ -55,10 +55,18 @@ export function ThreadProvider({ children }: { children: ReactNode }) {
       initialConfigs[modelKey] = {
         ...model.config,
         provider: model.config.provider,
-        temperatureRange: {
-          ...(model.config.temperatureRange ||
-            DEFAULT_MODEL_CONFIG.temperatureRange),
-        },
+        temperatureRange: model.config.temperatureRange === null
+          ? null
+          : model.config.temperatureRange === undefined
+          ? {
+              min: 0,
+              max: 1,
+              default: 1,
+              current: 1,
+            }
+          : {
+              ...model.config.temperatureRange,
+            },
         maxTokens: {
           ...(model.config.maxTokens || DEFAULT_MODEL_CONFIG.maxTokens),
         },
@@ -99,10 +107,18 @@ export function ThreadProvider({ children }: { children: ReactNode }) {
         [modelName]: {
           ...config,
           provider: config.provider,
-          temperatureRange: {
-            ...(config.temperatureRange ||
-              DEFAULT_MODEL_CONFIG.temperatureRange),
-          },
+          temperatureRange: config.temperatureRange === null
+            ? null
+            : config.temperatureRange === undefined
+            ? {
+                min: 0,
+                max: 1,
+                default: 1,
+                current: 1,
+              }
+            : {
+                ...config.temperatureRange,
+              },
           maxTokens: {
             ...(config.maxTokens || DEFAULT_MODEL_CONFIG.maxTokens),
           },

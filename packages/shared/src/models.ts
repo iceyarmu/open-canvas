@@ -1,6 +1,6 @@
 import { CustomModelConfig, ModelConfigurationParams } from "./types.js";
 
-const OPENAI_MODELS: ModelConfigurationParams[] = [
+const MODEL_CONFIGS: ModelConfigurationParams[] = [
   {
     name: "gpt-4.1",
     label: "GPT 4.1",
@@ -19,7 +19,6 @@ const OPENAI_MODELS: ModelConfigurationParams[] = [
         current: 4_096,
       },
     },
-    isNew: true,
   },
   {
     name: "gpt-4.1-mini",
@@ -39,19 +38,13 @@ const OPENAI_MODELS: ModelConfigurationParams[] = [
         current: 4_096,
       },
     },
-    isNew: true,
   },
   {
     name: "o4-mini",
     label: "o4 mini",
     config: {
       provider: "openai",
-      temperatureRange: {
-        min: 0,
-        max: 1,
-        default: 0.5,
-        current: 0.5,
-      },
+      temperatureRange: null,
       maxTokens: {
         min: 1,
         max: 100_000,
@@ -59,7 +52,6 @@ const OPENAI_MODELS: ModelConfigurationParams[] = [
         current: 4_096,
       },
     },
-    isNew: true,
   },
   {
     name: "gpt-4o",
@@ -79,7 +71,6 @@ const OPENAI_MODELS: ModelConfigurationParams[] = [
         current: 4_096,
       },
     },
-    isNew: false,
   },
   {
     name: "gpt-4o-mini",
@@ -99,7 +90,6 @@ const OPENAI_MODELS: ModelConfigurationParams[] = [
         current: 4_096,
       },
     },
-    isNew: false,
   },
   {
     name: "gpt-4.5-preview",
@@ -119,19 +109,13 @@ const OPENAI_MODELS: ModelConfigurationParams[] = [
         current: 4_096,
       },
     },
-    isNew: false,
   },
   {
     name: "o3-mini",
     label: "o3 mini",
     config: {
       provider: "openai",
-      temperatureRange: {
-        min: 0,
-        max: 1,
-        default: 0.5,
-        current: 0.5,
-      },
+      temperatureRange: null,
       maxTokens: {
         min: 1,
         max: 100_000,
@@ -139,19 +123,13 @@ const OPENAI_MODELS: ModelConfigurationParams[] = [
         current: 4_096,
       },
     },
-    isNew: false,
   },
   {
     name: "o1-mini",
     label: "o1 mini",
     config: {
       provider: "openai",
-      temperatureRange: {
-        min: 0,
-        max: 1,
-        default: 0.5,
-        current: 0.5,
-      },
+      temperatureRange: null,
       maxTokens: {
         min: 1,
         max: 65_536,
@@ -159,19 +137,13 @@ const OPENAI_MODELS: ModelConfigurationParams[] = [
         current: 4_096,
       },
     },
-    isNew: false,
   },
   {
     name: "o1",
     label: "o1",
     config: {
       provider: "openai",
-      temperatureRange: {
-        min: 0,
-        max: 1,
-        default: 0.5,
-        current: 0.5,
-      },
+      temperatureRange: null,
       maxTokens: {
         min: 1,
         max: 100_000,
@@ -179,41 +151,24 @@ const OPENAI_MODELS: ModelConfigurationParams[] = [
         current: 4_096,
       },
     },
-    isNew: false,
   },
 ];
 
 
 
-// Models which do NOT support the temperature parameter.
-export const TEMPERATURE_EXCLUDED_MODELS = [
-  "o1-mini",
-  "o3-mini",
-  "o1",
-  "o4-mini",
-];
-
-// Models which do NOT stream back tool calls.
-export const NON_STREAMING_TOOL_CALLING_MODELS: string[] = [];
-
-// Models which do NOT stream back text.
-export const NON_STREAMING_TEXT_MODELS = [
-  "o1",
-];
-
 // Models which preform CoT before generating a final response.
 export const THINKING_MODELS: string[] = [];
 
 export const ALL_MODELS: ModelConfigurationParams[] = [
-  ...OPENAI_MODELS,
+  ...MODEL_CONFIGS,
 ];
 
-type OPENAI_MODEL_NAMES = (typeof OPENAI_MODELS)[number]["name"];
-export type ALL_MODEL_NAMES = OPENAI_MODEL_NAMES;
+type MODEL_NAMES = (typeof MODEL_CONFIGS)[number]["name"];
+export type ALL_MODEL_NAMES = MODEL_NAMES;
 
-export const DEFAULT_MODEL_NAME: ALL_MODEL_NAMES = OPENAI_MODELS[1].name;
+export const DEFAULT_MODEL_NAME: ALL_MODEL_NAMES = MODEL_CONFIGS[1].name;
 export const DEFAULT_MODEL_CONFIG: CustomModelConfig = {
-  ...OPENAI_MODELS[1].config,
-  temperatureRange: { ...OPENAI_MODELS[1].config.temperatureRange },
-  maxTokens: { ...OPENAI_MODELS[1].config.maxTokens },
+  ...MODEL_CONFIGS[1].config,
+  temperatureRange: MODEL_CONFIGS[1].config.temperatureRange ? { ...MODEL_CONFIGS[1].config.temperatureRange } : undefined,
+  maxTokens: { ...MODEL_CONFIGS[1].config.maxTokens },
 };
