@@ -24,9 +24,7 @@ import {
 } from "@opencanvas/shared/constants";
 import {
   TEMPERATURE_EXCLUDED_MODELS,
-  LANGCHAIN_USER_ONLY_MODELS,
 } from "@opencanvas/shared/models";
-import { createClient, Session, User } from "@supabase/supabase-js";
 
 export const formatReflections = (
   reflections: Reflections,
@@ -188,32 +186,6 @@ export function optionallyGetSystemPromptFromConfig(
   return config.configurable?.systemPrompt as string | undefined;
 }
 
-async function getUserFromConfig(
-  config: LangGraphRunnableConfig
-): Promise<User | undefined> {
-  if (
-    !process.env.NEXT_PUBLIC_SUPABASE_URL ||
-    !process.env.SUPABASE_SERVICE_ROLE
-  ) {
-    return undefined;
-  }
-
-  const accessToken = (
-    config.configurable?.supabase_session as Session | undefined
-  )?.access_token;
-  if (!accessToken) {
-    return undefined;
-  }
-
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.SUPABASE_SERVICE_ROLE
-  );
-
-  const authRes = await supabase.auth.getUser(accessToken);
-  return authRes.data.user || undefined;
-}
-
 export async function getModelFromConfig(
   config: LangGraphRunnableConfig,
   extra?: {
@@ -234,22 +206,6 @@ export async function getModelFromConfig(
     ...extra,
   };
 
-  const isLangChainUserModel = LANGCHAIN_USER_ONLY_MODELS.some(
-    (m) => m === modelName
-  );
-  if (isLangChainUserModel) {
-    const user = await getUserFromConfig(config);
-    if (!user) {
-      throw new Error(
-        "Unauthorized. Can not use LangChain only models without a user."
-      );
-    }
-    if (!user.email?.endsWith("@langchain.dev")) {
-      throw new Error(
-        "Unauthorized. Can not use LangChain only models without a user with a @langchain.dev email."
-      );
-    }
-  }
 
   const includeStandardParams = !TEMPERATURE_EXCLUDED_MODELS.some(
     (m) => m === modelName
