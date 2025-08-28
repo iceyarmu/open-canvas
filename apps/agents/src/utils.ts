@@ -174,6 +174,7 @@ export const getModelConfig = (
     modelConfig,
     modelProvider: "openai",
     apiKey: process.env.OPENAI_API_KEY,
+    baseUrl: process.env.OPENAI_API_BASE_URL,
   };
 };
 
@@ -214,7 +215,7 @@ export async function getModelFromConfig(
       : {
           max_completion_tokens: maxTokens,
         }),
-    ...(baseUrl ? { baseURL: baseUrl } : {}),
+    ...(baseUrl ? { baseUrl } : {}),
     ...(apiKey ? { apiKey } : {}),
     ...(modelConfig?.reasoning_effort ? { reasoning_effort: modelConfig.reasoning_effort } : {}),
   });
