@@ -216,6 +216,7 @@ export async function getModelFromConfig(
         }),
     ...(baseUrl ? { baseURL: baseUrl } : {}),
     ...(apiKey ? { apiKey } : {}),
+    ...(modelConfig?.reasoning_effort ? { reasoning_effort: modelConfig.reasoning_effort } : {}),
   });
 }
 

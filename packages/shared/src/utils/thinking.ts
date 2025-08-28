@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from "react";
 import { AIMessage, type BaseMessage } from "@langchain/core/messages";
-import { THINKING_MODELS } from "../models.js";
+import { ALL_MODELS } from "../models.js";
 
 type ThinkingAndResponseTokens = {
   thinking: string;
@@ -129,5 +129,5 @@ export function handleRewriteArtifactThinkingModel({
 }
 
 export function isThinkingModel(model: string): boolean {
-  return THINKING_MODELS.some((m) => m === model);
+  return ALL_MODELS.some((m) => m.name === model && m.config.reasoning_effort);
 }

@@ -51,6 +51,7 @@ const MODEL_CONFIGS: ModelConfigurationParams[] = [
         default: 4_096,
         current: 4_096,
       },
+      reasoning_effort: "high",
     },
   },
   {
@@ -122,6 +123,7 @@ const MODEL_CONFIGS: ModelConfigurationParams[] = [
         default: 4_096,
         current: 4_096,
       },
+      reasoning_effort: "high",
     },
   },
   {
@@ -136,6 +138,7 @@ const MODEL_CONFIGS: ModelConfigurationParams[] = [
         default: 4_096,
         current: 4_096,
       },
+      reasoning_effort: "high",
     },
   },
   {
@@ -150,14 +153,13 @@ const MODEL_CONFIGS: ModelConfigurationParams[] = [
         default: 4_096,
         current: 4_096,
       },
+      reasoning_effort: "high",
     },
   },
 ];
 
 
 
-// Models which preform CoT before generating a final response.
-export const THINKING_MODELS: string[] = [];
 
 export const ALL_MODELS: ModelConfigurationParams[] = [
   ...MODEL_CONFIGS,

@@ -21,6 +21,7 @@ export interface CustomModelConfig {
     default: number;
     current: number;
   };
+  reasoning_effort?: 'low' | 'medium' | 'high';
 }
 
 export type ArtifactLengthOptions = "shortest" | "short" | "long" | "longest";
