@@ -54,7 +54,7 @@ export const Thread: FC<ThreadProps> = (props: ThreadProps) => {
   } = props;
   const { toast } = useToast();
   const {
-    graphData: { clearState, runId, feedbackSubmitted, setFeedbackSubmitted },
+    graphData: { clearState, runId },
   } = useGraphContext();
   const { selectedAssistant } = useAssistantContext();
   const {
@@ -155,8 +155,6 @@ export const Thread: FC<ThreadProps> = (props: ThreadProps) => {
             AssistantMessage: (prop) => (
               <AssistantMessage
                 {...prop}
-                feedbackSubmitted={feedbackSubmitted}
-                setFeedbackSubmitted={setFeedbackSubmitted}
                 runId={runId}
               />
             ),

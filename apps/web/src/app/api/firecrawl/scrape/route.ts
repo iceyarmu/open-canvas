@@ -57,10 +57,10 @@ export async function POST(req: NextRequest) {
       { status: 200 }
     );
   } catch (error: any) {
-    console.error("Failed to process feedback request:", error);
+    console.error("Failed to process scrape request:", error);
 
     return NextResponse.json(
-      { error: "Failed to submit feedback." + error.message },
+      { error: "Failed to scrape content: " + error.message },
       { status: 500 }
     );
   }

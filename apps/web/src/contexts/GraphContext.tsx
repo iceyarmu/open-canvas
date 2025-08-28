@@ -72,14 +72,12 @@ interface GraphData {
   updateRenderedArtifactRequired: boolean;
   isArtifactSaved: boolean;
   firstTokenReceived: boolean;
-  feedbackSubmitted: boolean;
   artifactUpdateFailed: boolean;
   chatStarted: boolean;
   searchEnabled: boolean;
   setSearchEnabled: Dispatch<SetStateAction<boolean>>;
   setChatStarted: Dispatch<SetStateAction<boolean>>;
   setIsStreaming: Dispatch<SetStateAction<boolean>>;
-  setFeedbackSubmitted: Dispatch<SetStateAction<boolean>>;
   setArtifact: Dispatch<SetStateAction<ArtifactV3 | undefined>>;
   setSelectedBlocks: Dispatch<SetStateAction<TextHighlight | undefined>>;
   setSelectedArtifact: (index: number) => void;
@@ -136,7 +134,6 @@ export function GraphProvider({ children }: { children: ReactNode }) {
   const [threadSwitched, setThreadSwitched] = useState(false);
   const [firstTokenReceived, setFirstTokenReceived] = useState(false);
   const [runId, setRunId] = useState<string>();
-  const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
   const [error, setError] = useState(false);
   const [artifactUpdateFailed, setArtifactUpdateFailed] = useState(false);
   const [searchEnabled, setSearchEnabled] = useState(false);
@@ -338,7 +335,6 @@ export function GraphProvider({ children }: { children: ReactNode }) {
 
     setIsStreaming(true);
     setRunId(undefined);
-    setFeedbackSubmitted(false);
     // The root level run ID of this stream
     let runId = "";
     let followupMessageId = "";
@@ -1422,14 +1418,12 @@ export function GraphProvider({ children }: { children: ReactNode }) {
       updateRenderedArtifactRequired,
       isArtifactSaved,
       firstTokenReceived,
-      feedbackSubmitted,
       chatStarted,
       artifactUpdateFailed,
       searchEnabled,
       setSearchEnabled,
       setChatStarted,
       setIsStreaming,
-      setFeedbackSubmitted,
       setArtifact,
       setSelectedBlocks,
       setSelectedArtifact,
