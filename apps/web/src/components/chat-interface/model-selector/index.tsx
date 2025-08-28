@@ -145,48 +145,12 @@ export default function ModelSelector({
     }
 
     if (
-      model.name.includes("fireworks/") &&
-      process.env.NEXT_PUBLIC_FIREWORKS_ENABLED === "false"
-    ) {
-      return false;
-    }
-    if (
-      model.name.includes("claude-") &&
-      process.env.NEXT_PUBLIC_ANTHROPIC_ENABLED === "false"
-    ) {
-      return false;
-    }
-    if (
       model.name.includes("gpt-") &&
       process.env.NEXT_PUBLIC_OPENAI_ENABLED === "false"
     ) {
       return false;
     }
-    if (
-      model.name.includes("azure/") &&
-      process.env.NEXT_PUBLIC_AZURE_ENABLED === "false"
-    ) {
-      return false;
-    }
-    if (
-      model.name.includes("gemini-") &&
-      process.env.NEXT_PUBLIC_GEMINI_ENABLED === "false"
-    ) {
-      return false;
-    }
-    if (
-      model.name.includes("ollama-") &&
-      process.env.NEXT_PUBLIC_OLLAMA_ENABLED === "false"
-    ) {
-      return false;
-    }
 
-    if (
-      model.name.includes("groq/") &&
-      process.env.NEXT_PUBLIC_GROQ_ENABLED === "false"
-    ) {
-      return false;
-    }
 
     // By default, return true if the environment variable is not set or is set to true
     return true;
@@ -198,26 +162,8 @@ export default function ModelSelector({
     (m) => m.name === modelName && m.isNew
   );
 
-  const azureModelGroup = allAllowedModels.filter(
-    (m) => m.config.provider === "azure_openai"
-  );
   const openaiModelGroup = allAllowedModels.filter(
     (m) => m.config.provider === "openai"
-  );
-  const ollamaModelGroup = allAllowedModels.filter(
-    (m) => m.config.provider === "ollama"
-  );
-  const anthropicModelGroup = allAllowedModels.filter(
-    (m) => m.config.provider === "anthropic"
-  );
-  const genAiModelGroup = allAllowedModels.filter(
-    (m) => m.config.provider === "google-genai"
-  );
-  const fireworksModelGroup = allAllowedModels.filter(
-    (m) => m.config.provider === "fireworks"
-  );
-  const groqModelGroup = allAllowedModels.filter(
-    (m) => m.config.provider === "groq"
   );
 
   return (
@@ -264,125 +210,11 @@ export default function ModelSelector({
               </CommandGroup>
             )}
 
-            {azureModelGroup.length > 0 && (
-              <CommandGroup heading="Azure OpenAI" className="w-full">
-                {azureModelGroup.map((model) => {
-                  const config = modelConfigs[model.name.replace("azure/", "")];
-                  return (
-                    <CommandModelItem
-                      key={model.name}
-                      model={model}
-                      handleModelChange={handleModelChange}
-                      config={config}
-                      selectedModelName={modelName}
-                      openConfigModelId={openConfigModelId}
-                      setOpenConfigModelId={setOpenConfigModelId}
-                      setModelConfig={setModelConfig}
-                    />
-                  );
-                })}
-              </CommandGroup>
-            )}
 
-            {anthropicModelGroup.length > 0 && (
-              <CommandGroup heading="Anthropic" className="w-full">
-                {anthropicModelGroup.map((model) => {
-                  const config = modelConfigs[model.name];
-                  return (
-                    <CommandModelItem
-                      key={model.name}
-                      model={model}
-                      handleModelChange={handleModelChange}
-                      config={config}
-                      selectedModelName={modelName}
-                      openConfigModelId={openConfigModelId}
-                      setOpenConfigModelId={setOpenConfigModelId}
-                      setModelConfig={setModelConfig}
-                    />
-                  );
-                })}
-              </CommandGroup>
-            )}
 
-            {genAiModelGroup.length > 0 && (
-              <CommandGroup heading="Google GenAI" className="w-full">
-                {genAiModelGroup.map((model) => {
-                  const config = modelConfigs[model.name];
-                  return (
-                    <CommandModelItem
-                      key={model.name}
-                      model={model}
-                      handleModelChange={handleModelChange}
-                      config={config}
-                      selectedModelName={modelName}
-                      openConfigModelId={openConfigModelId}
-                      setOpenConfigModelId={setOpenConfigModelId}
-                      setModelConfig={setModelConfig}
-                    />
-                  );
-                })}
-              </CommandGroup>
-            )}
 
-            {groqModelGroup.length > 0 && (
-              <CommandGroup heading="Groq" className="w-full">
-                {groqModelGroup.map((model) => {
-                  const config = modelConfigs[model.name];
-                  return (
-                    <CommandModelItem
-                      key={model.name}
-                      model={model}
-                      handleModelChange={handleModelChange}
-                      config={config}
-                      selectedModelName={modelName}
-                      openConfigModelId={openConfigModelId}
-                      setOpenConfigModelId={setOpenConfigModelId}
-                      setModelConfig={setModelConfig}
-                    />
-                  );
-                })}
-              </CommandGroup>
-            )}
 
-            {fireworksModelGroup.length > 0 && (
-              <CommandGroup heading="Fireworks" className="w-full">
-                {fireworksModelGroup.map((model) => {
-                  const config = modelConfigs[model.name];
-                  return (
-                    <CommandModelItem
-                      key={model.name}
-                      model={model}
-                      handleModelChange={handleModelChange}
-                      config={config}
-                      selectedModelName={modelName}
-                      openConfigModelId={openConfigModelId}
-                      setOpenConfigModelId={setOpenConfigModelId}
-                      setModelConfig={setModelConfig}
-                    />
-                  );
-                })}
-              </CommandGroup>
-            )}
 
-            {ollamaModelGroup.length > 0 && (
-              <CommandGroup heading="Ollama" className="w-full">
-                {ollamaModelGroup.map((model) => {
-                  const config = modelConfigs[model.name];
-                  return (
-                    <CommandModelItem
-                      key={model.name}
-                      model={model}
-                      handleModelChange={handleModelChange}
-                      config={config}
-                      selectedModelName={modelName}
-                      openConfigModelId={openConfigModelId}
-                      setOpenConfigModelId={setOpenConfigModelId}
-                      setModelConfig={setModelConfig}
-                    />
-                  );
-                })}
-              </CommandGroup>
-            )}
           </CommandList>
         </Command>
       </PopoverContent>

@@ -1,7 +1,8 @@
 import { FireCrawlLoader } from "@langchain/community/document_loaders/web/firecrawl";
 import { HumanMessage } from "@langchain/core/messages";
-import { initChatModel } from "langchain/chat_models/universal";
 import { traceable } from "langsmith/traceable";
+import { LangGraphRunnableConfig } from "@langchain/langgraph";
+import { getModelFromConfig } from "../../../utils.js";
 import z from "zod";
 
 const PROMPT = `You're an advanced AI assistant.
@@ -57,14 +58,14 @@ const fetchUrlContents = traceable(fetchUrlContentsFunc, {
  */
 async function includeURLContentsFunc(
   message: HumanMessage,
-  urls: string[]
+  urls: string[],
+  config: LangGraphRunnableConfig
 ): Promise<HumanMessage | undefined> {
   try {
     const prompt = message.content as string;
 
     const model = (
-      await initChatModel("gemini-2.0-flash", {
-        modelProvider: "google-genai",
+      await getModelFromConfig(config, {
         temperature: 0,
       })
     ).bindTools(

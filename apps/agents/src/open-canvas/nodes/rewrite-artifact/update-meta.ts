@@ -3,7 +3,6 @@ import { OpenCanvasGraphAnnotation } from "../../state.js";
 import {
   formatArtifactContent,
   getModelFromConfig,
-  isUsingO1MiniModel,
 } from "../../../utils.js";
 import { getArtifactContent } from "@opencanvas/shared/utils/artifacts";
 import { GET_TITLE_TYPE_REWRITE_ARTIFACT } from "../../prompts.js";
@@ -51,10 +50,9 @@ export async function optionallyUpdateArtifactMeta(
     throw new Error("No recent human message found");
   }
 
-  const isO1MiniModel = isUsingO1MiniModel(config);
   const optionallyUpdateArtifactResponse = await toolCallingModel.invoke([
     {
-      role: isO1MiniModel ? "user" : "system",
+      role: "system",
       content: optionallyUpdateArtifactMetaPrompt,
     },
     recentHumanMessage,

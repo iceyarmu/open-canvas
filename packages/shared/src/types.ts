@@ -22,13 +22,6 @@ export interface CustomModelConfig {
     default: number;
     current: number;
   };
-  azureConfig?: {
-    azureOpenAIApiKey: string;
-    azureOpenAIApiInstanceName: string;
-    azureOpenAIApiDeploymentName: string;
-    azureOpenAIApiVersion: string;
-    azureOpenAIBasePath?: string;
-  };
 }
 
 export type ArtifactLengthOptions = "shortest" | "short" | "long" | "longest";

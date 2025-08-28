@@ -7,7 +7,6 @@ import {
   formatArtifactContentWithTemplate,
   formatReflections,
   getModelFromConfig,
-  isUsingO1MiniModel,
 } from "../../utils.js";
 import { CURRENT_ARTIFACT_PROMPT, NO_ARTIFACT_PROMPT } from "../prompts.js";
 import {
@@ -64,9 +63,8 @@ You also have the following reflections on style guidelines and general memories
     );
 
   const contextDocumentMessages = await createContextDocumentMessages(config);
-  const isO1MiniModel = isUsingO1MiniModel(config);
   const response = await smallModel.invoke([
-    { role: isO1MiniModel ? "user" : "system", content: formattedPrompt },
+    { role: "system", content: formattedPrompt },
     ...contextDocumentMessages,
     ...state._messages,
   ]);

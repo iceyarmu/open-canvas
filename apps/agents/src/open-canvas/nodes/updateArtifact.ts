@@ -14,7 +14,6 @@ import {
   formatReflections,
   getModelConfig,
   getModelFromConfig,
-  isUsingO1MiniModel,
 } from "../../utils.js";
 import { UPDATE_HIGHLIGHTED_ARTIFACT_PROMPT } from "../prompts.js";
 import {
@@ -115,9 +114,8 @@ export const updateArtifact = async (
   }
 
   const contextDocumentMessages = await createContextDocumentMessages(config);
-  const isO1MiniModel = isUsingO1MiniModel(config);
   const updatedArtifact = await smallModel.invoke([
-    { role: isO1MiniModel ? "user" : "system", content: formattedPrompt },
+    { role: "system", content: formattedPrompt },
     ...contextDocumentMessages,
     recentHumanMessage,
   ]);

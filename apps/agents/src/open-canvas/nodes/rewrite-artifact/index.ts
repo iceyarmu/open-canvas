@@ -15,7 +15,6 @@ import {
   getFormattedReflections,
   getModelConfig,
   getModelFromConfig,
-  isUsingO1MiniModel,
   optionallyGetSystemPromptFromConfig,
 } from "../../../utils.js";
 import { isArtifactMarkdownContent } from "@opencanvas/shared/utils/artifacts";
@@ -60,9 +59,8 @@ export const rewriteArtifact = async (
     : formattedPrompt;
 
   const contextDocumentMessages = await createContextDocumentMessages(config);
-  const isO1MiniModel = isUsingO1MiniModel(config);
   const newArtifactResponse = await smallModelWithConfig.invoke([
-    { role: isO1MiniModel ? "user" : "system", content: fullSystemPrompt },
+    { role: "system", content: fullSystemPrompt },
     ...contextDocumentMessages,
     recentHumanMessage,
   ]);

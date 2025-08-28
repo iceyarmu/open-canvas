@@ -3,7 +3,6 @@ import {
   getFormattedReflections,
   getModelConfig,
   getModelFromConfig,
-  isUsingO1MiniModel,
   optionallyGetSystemPromptFromConfig,
 } from "../../../utils.js";
 import { ArtifactV3 } from "@opencanvas/shared/types";
@@ -23,9 +22,7 @@ export const generateArtifact = async (
   state: typeof OpenCanvasGraphAnnotation.State,
   config: LangGraphRunnableConfig
 ): Promise<OpenCanvasGraphReturnType> => {
-  const { modelName } = getModelConfig(config, {
-    isToolCalling: true,
-  });
+  const { modelName } = getModelConfig(config);
   const smallModel = await getModelFromConfig(config, {
     temperature: 0.5,
     isToolCalling: true,
@@ -56,10 +53,9 @@ export const generateArtifact = async (
     : formattedNewArtifactPrompt;
 
   const contextDocumentMessages = await createContextDocumentMessages(config);
-  const isO1MiniModel = isUsingO1MiniModel(config);
   const response = await modelWithArtifactTool.invoke(
     [
-      { role: isO1MiniModel ? "user" : "system", content: fullSystemPrompt },
+      { role: "system", content: fullSystemPrompt },
       ...contextDocumentMessages,
       ...state._messages,
     ],
