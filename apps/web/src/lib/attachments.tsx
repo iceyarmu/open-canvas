@@ -4,7 +4,6 @@ import { useToast } from "@/hooks/use-toast";
 import { ContextDocument } from "@opencanvas/shared/types";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { toBlobURL } from "@ffmpeg/util";
-import { createClient } from "@supabase/supabase-js";
 
 export function arrayToFileList(files: File[] | undefined) {
   if (!files || !files.length) return undefined;
@@ -56,43 +55,10 @@ export function contextDocumentToFile(document: ContextDocument): File {
 }
 
 export async function transcribeAudio(file: File, userId: string) {
-  if (
-    !process.env.NEXT_PUBLIC_SUPABASE_URL_DOCUMENTS ||
-    !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY_DOCUMENTS
-  ) {
-    throw new Error(
-      "Supabase credentials for uploading context documents are missing"
-    );
-  }
-  const client = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL_DOCUMENTS,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY_DOCUMENTS
-  );
-
-  const res = await client.storage
-    .from("documents")
-    .upload(
-      `${userId}/${new Date().getTime()}-${file.name.replaceAll("/", "-").replaceAll(" ", "-")}`,
-      file,
-      {
-        upsert: true,
-      }
-    );
-  if (res.error) {
-    throw new Error(`Failed to upload context document: ${res.error.message}`);
-  }
-
-  const result = await fetch("/api/whisper/audio", {
-    method: "POST",
-    body: JSON.stringify({
-      path: res.data.path,
-    }),
-  });
-  if (!result.ok) {
-    throw new Error("Failed to transcribe audio");
-  }
-  const data = await result.json();
-  return data.text;
+  // Audio transcription is temporarily disabled as it requires cloud storage
+  // Return empty string or a placeholder message
+  console.warn("Audio transcription is currently disabled");
+  return "[Audio transcription is not available in this version]";
 }
 
 export function fileToBase64(file: File): Promise<string> {

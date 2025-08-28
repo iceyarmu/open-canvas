@@ -8,7 +8,6 @@ import { CustomModelConfig } from "@opencanvas/shared/types";
 import { Thread } from "@langchain/langgraph-sdk";
 import { createClient } from "../hooks/utils";
 import { createContext, ReactNode, useContext, useMemo, useState } from "react";
-import { useUserContext } from "./UserContext";
 import { useToast } from "@/hooks/use-toast";
 import { useQueryState } from "nuqs";
 
@@ -35,7 +34,6 @@ type ThreadContentType = {
 const ThreadContext = createContext<ThreadContentType | undefined>(undefined);
 
 export function ThreadProvider({ children }: { children: ReactNode }) {
-  const { user } = useUserContext();
   const { toast } = useToast();
   const [threadId, setThreadId] = useQueryState("threadId");
   const [userThreads, setUserThreads] = useState<Thread[]>([]);
@@ -137,22 +135,16 @@ export function ThreadProvider({ children }: { children: ReactNode }) {
   };
 
   const createThread = async (): Promise<Thread | undefined> => {
-    if (!user) {
-      toast({
-        title: "Failed to create thread",
-        description: "User not found",
-        duration: 5000,
-        variant: "destructive",
-      });
-      return;
-    }
+    const userId = typeof window !== "undefined" 
+      ? localStorage.getItem("opencanvas_user_id") || "default-user"
+      : "default-user";
     const client = createClient();
     setCreateThreadLoading(true);
 
     try {
       const thread = await client.threads.create({
         metadata: {
-          supabase_user_id: user.id,
+          supabase_user_id: userId,
           customModelName: modelName,
           modelConfig: {
             ...modelConfig,
@@ -184,15 +176,9 @@ export function ThreadProvider({ children }: { children: ReactNode }) {
   };
 
   const getUserThreads = async () => {
-    if (!user) {
-      toast({
-        title: "Failed to create thread",
-        description: "User not found",
-        duration: 5000,
-        variant: "destructive",
-      });
-      return;
-    }
+    const userId = typeof window !== "undefined"
+      ? localStorage.getItem("opencanvas_user_id") || "default-user"
+      : "default-user";
 
     setIsUserThreadsLoading(true);
     try {
@@ -200,7 +186,7 @@ export function ThreadProvider({ children }: { children: ReactNode }) {
 
       const userThreads = await client.threads.search({
         metadata: {
-          supabase_user_id: user.id,
+          supabase_user_id: userId,
         },
         limit: 100,
       });

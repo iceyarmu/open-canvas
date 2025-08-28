@@ -1,5 +1,4 @@
 import { v4 as uuidv4 } from "uuid";
-import { useUserContext } from "@/contexts/UserContext";
 import {
   isArtifactCodeContent,
   isArtifactMarkdownContent,
@@ -114,7 +113,6 @@ function extractStreamDataOutput(output: any) {
 }
 
 export function GraphProvider({ children }: { children: ReactNode }) {
-  const userData = useUserContext();
   const assistantsData = useAssistantContext();
   const threadData = useThreadContext();
   const { toast } = useToast();
@@ -148,17 +146,18 @@ export function GraphProvider({ children }: { children: ReactNode }) {
   );
 
   useEffect(() => {
-    if (typeof window === "undefined" || !userData.user) return;
+    if (typeof window === "undefined") return;
 
+    const userId = localStorage.getItem("opencanvas_user_id") || "default-user";
     // Get or create a new assistant if there isn't one set in state, and we're not
     // loading all assistants already.
     if (
       !assistantsData.selectedAssistant &&
       !assistantsData.isLoadingAllAssistants
     ) {
-      assistantsData.getOrCreateAssistant(userData.user.id);
+      assistantsData.getOrCreateAssistant(userId);
     }
-  }, [userData.user]);
+  }, []);
 
   // Very hacky way of ensuring updateState is not called when a thread is switched
   useEffect(() => {
@@ -213,7 +212,6 @@ export function GraphProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (
       typeof window === "undefined" ||
-      !userData.user ||
       threadData.createThreadLoading ||
       !threadData.threadId
     ) {
@@ -235,7 +233,7 @@ export function GraphProvider({ children }: { children: ReactNode }) {
       // Failed to fetch thread. Remove from query params
       threadData.setThreadId(null);
     });
-  }, [threadData.threadId, userData.user]);
+  }, [threadData.threadId]);
 
   const updateArtifact = async (
     artifactToUpdate: ArtifactV3,

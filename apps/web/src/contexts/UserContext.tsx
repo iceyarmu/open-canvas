@@ -1,5 +1,3 @@
-import { createSupabaseClient } from "@/lib/supabase/client";
-import { User } from "@supabase/supabase-js";
 import {
   createContext,
   ReactNode,
@@ -7,6 +5,13 @@ import {
   useEffect,
   useState,
 } from "react";
+import { v4 as uuidv4 } from "uuid";
+
+type User = {
+  id: string;
+  email?: string;
+  created_at?: string;
+};
 
 type UserContentType = {
   getUser: () => Promise<User | undefined>;
@@ -16,30 +21,38 @@ type UserContentType = {
 
 const UserContext = createContext<UserContentType | undefined>(undefined);
 
+const USER_ID_KEY = "opencanvas_user_id";
+
+function getOrCreateUserId(): string {
+  if (typeof window === "undefined") {
+    return "server-side-user";
+  }
+  
+  let userId = localStorage.getItem(USER_ID_KEY);
+  if (!userId) {
+    userId = uuidv4();
+    localStorage.setItem(USER_ID_KEY, userId);
+  }
+  return userId;
+}
+
 export function UserProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User>();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (user || typeof window === "undefined") return;
-
-    getUser();
+    const userId = getOrCreateUserId();
+    setUser({
+      id: userId,
+      email: `user-${userId.slice(0, 8)}@opencanvas.local`,
+      created_at: new Date().toISOString(),
+    });
+    setLoading(false);
   }, []);
 
   async function getUser() {
-    if (user) {
-      setLoading(false);
-      return user;
-    }
-
-    const supabase = createSupabaseClient();
-
-    const {
-      data: { user: supabaseUser },
-    } = await supabase.auth.getUser();
-    setUser(supabaseUser || undefined);
     setLoading(false);
-    return supabaseUser || undefined;
+    return user;
   }
 
   const contextValue: UserContentType = {
