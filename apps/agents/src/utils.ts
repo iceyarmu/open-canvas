@@ -174,7 +174,7 @@ export const getModelConfig = (
     modelConfig,
     modelProvider: "openai",
     apiKey: process.env.OPENAI_API_KEY,
-    baseUrl: process.env.OPENAI_API_BASE_URL,
+    baseUrl: process.env.OPENAI_BASE_URL,
   };
 };
 
@@ -204,9 +204,7 @@ export async function getModelFromConfig(
     ...extra,
   };
 
-
   const includeStandardParams = modelConfig?.temperatureRange !== null;
-
   return new ChatOpenAI({
     model: modelName,
     // Certain models (e.g., OpenAI o1) do not support passing the temperature param.
@@ -215,7 +213,7 @@ export async function getModelFromConfig(
       : {
           max_completion_tokens: maxTokens,
         }),
-    ...(baseUrl ? { baseUrl } : {}),
+    ...(baseUrl ? { configuration: { baseURL: baseUrl } } : {}),
     ...(apiKey ? { apiKey } : {}),
     ...(modelConfig?.reasoning_effort ? { reasoning_effort: modelConfig.reasoning_effort } : {}),
   });
