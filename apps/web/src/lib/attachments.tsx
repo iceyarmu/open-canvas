@@ -54,7 +54,7 @@ export function contextDocumentToFile(document: ContextDocument): File {
   }
 }
 
-export async function transcribeAudio(file: File, userId: string) {
+export async function transcribeAudio(_file: File, _userId: string) {
   // Audio transcription is temporarily disabled as it requires cloud storage
   // Return empty string or a placeholder message
   console.warn("Audio transcription is currently disabled");

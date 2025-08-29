@@ -101,12 +101,6 @@ function extractStreamDataChunk(chunk: any) {
   return chunk;
 }
 
-function extractStreamDataOutput(output: any) {
-  if (Array.isArray(output)) {
-    return output[1];
-  }
-  return output;
-}
 
 export function GraphProvider({ children }: { children: ReactNode }) {
   const assistantsData = useAssistantContext();
