@@ -1,4 +1,4 @@
-import { CircleCheck, CircleX, LoaderCircle } from "lucide-react";
+import { CircleX, LoaderCircle } from "lucide-react";
 
 interface ArtifactTitleProps {
   title: string;
@@ -8,25 +8,20 @@ interface ArtifactTitleProps {
 
 export function ArtifactTitle(props: ArtifactTitleProps) {
   return (
-    <div className="pl-[6px] pt-3 flex flex-col items-start justify-start ml-[6px] gap-1 max-w-1/2">
-      <h1 className="text-xl font-medium text-gray-600 line-clamp-1">
+    <div className="pl-[6px] pt-3 flex items-center justify-between ml-[6px] gap-4 max-w-1/2">
+      <h1 className="text-xl font-medium text-gray-600 line-clamp-1 pl-[40px] flex-1">
         {props.title}
       </h1>
-      <span className="mt-auto">
-        {props.isArtifactSaved ? (
+      <span className="flex-shrink-0">
+        {props.isArtifactSaved ? null : !props.artifactUpdateFailed ? (
           <span className="flex items-center justify-start gap-1 text-gray-400">
-            <p className="text-xs font-light">Saved</p>
-            <CircleCheck className="w-[10px] h-[10px]" />
-          </span>
-        ) : !props.artifactUpdateFailed ? (
-          <span className="flex items-center justify-start gap-1 text-gray-400">
-            <p className="text-xs font-light">Saving</p>
             <LoaderCircle className="animate-spin w-[10px] h-[10px]" />
+            <p className="text-xs font-light">Saving</p>
           </span>
         ) : props.artifactUpdateFailed ? (
           <span className="flex items-center justify-start gap-1 text-red-300">
-            <p className="text-xs font-light">Failed to save</p>
             <CircleX className="w-[10px] h-[10px]" />
+            <p className="text-xs font-light">Failed to save</p>
           </span>
         ) : null}
       </span>
